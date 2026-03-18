@@ -1,15 +1,15 @@
 package org.kharlamova.task.command;
 
-import org.kharlamova.task.command.impl.RegisterCommand;
-import org.kharlamova.task.command.impl.DefaultCommand;
-import org.kharlamova.task.command.impl.LoginCommand;
-import org.kharlamova.task.command.impl.LogoutCommand;
+import org.kharlamova.task.command.impl.*;
 
 public enum CommandType {
     REGISTER(new RegisterCommand()),
     LOGIN(new LoginCommand()),
     LOGOUT(new LogoutCommand()),
-    DEFAULT(new DefaultCommand());
+    MAIN(new MainCommand()),
+    ADMIN(new AdminCommand()),
+    DELETE_USER(new DeleteUserCommand()),
+    UPDATE_ROLE(new UpdateRoleCommand());
     Command command;
 
     CommandType(Command command) {

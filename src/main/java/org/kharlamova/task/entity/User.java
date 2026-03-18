@@ -7,6 +7,8 @@ public class User {
 
     private String password;
 
+    private Role role;
+
     public User() {
 
     }
@@ -14,6 +16,7 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+        this.role = Role.USER;
     }
 
     public Long getId() {
@@ -38,5 +41,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

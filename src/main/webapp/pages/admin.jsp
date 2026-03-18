@@ -4,7 +4,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Пользователи</title>
+    <title>Админ панель</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
@@ -31,8 +31,6 @@
             margin-bottom: 1.25rem;
         }
 
-        .logo { font-size: 1.2rem; font-weight: 600; }
-        .logo span { color: #4d7cff; }
         .welcome { font-size: .85rem; color: #888; }
         .welcome strong { color: #1a1a1a; font-weight: 600; }
 
@@ -129,6 +127,7 @@
             padding: .9rem 1rem;
             border: 1px solid #eee;
             border-radius: 10px;
+            gap: .75rem;
             transition: border-color .2s, box-shadow .2s;
         }
         .user-item:hover {
@@ -136,7 +135,7 @@
             box-shadow: 0 2px 8px rgba(77,124,255,.08);
         }
 
-        .user-left { display: flex; align-items: center; gap: .85rem; }
+        .user-left { display: flex; align-items: center; gap: .85rem; flex: 1; min-width: 0; }
 
         .avatar {
             width: 36px; height: 36px;
@@ -149,19 +148,55 @@
             align-items: center;
             justify-content: center;
             text-transform: uppercase;
+            flex-shrink: 0;
         }
 
-        .user-email { font-size: .88rem; font-weight: 500; }
+        .user-email { font-size: .88rem; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .user-id { font-size: .75rem; color: #bbb; margin-top: .15rem; }
 
-        .role-badge {
-            font-size: .72rem;
+        .user-actions { display: flex; align-items: center; gap: .5rem; flex-shrink: 0; }
+
+        /* Role select */
+        .role-select {
+            padding: .3rem .5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: .78rem;
             font-weight: 600;
-            padding: .25rem .65rem;
-            border-radius: 20px;
+            cursor: pointer;
+            outline: none;
+            transition: border-color .2s;
         }
-        .role-admin { background: #fff0f3; color: #c0392b; }
-        .role-user  { background: #f0fff4; color: #1e7e34; }
+        .role-select:focus { border-color: #4d7cff; }
+
+        .btn-update {
+            padding: .3rem .75rem;
+            background: #4d7cff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: .78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .2s;
+        }
+        .btn-update:hover { background: #3a6aee; }
+
+        .btn-delete {
+            padding: .3rem .75rem;
+            background: transparent;
+            color: #c0392b;
+            border: 1.5px solid #c0392b;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: .78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .2s, color .2s;
+        }
+        .btn-delete:hover { background: #c0392b; color: #fff; }
 
         .empty { text-align: center; padding: 2.5rem 0; color: #bbb; font-size: .9rem; }
         .empty-icon { font-size: 2rem; margin-bottom: .5rem; }
@@ -181,18 +216,18 @@
 <div class="container">
 
     <div class="header">
-        <div class="welcome">Привет, <strong>${user}</strong>!</div>
+        <div class="welcome">Привет, <strong>${user}</strong>! 🛡️ Админ</div>
         <a href="${pageContext.request.contextPath}/controller?command=logout" class="btn-logout">Выйти</a>
     </div>
 
     <div class="card">
         <div class="card-title">Поиск пользователя</div>
         <form action="${pageContext.request.contextPath}/controller" method="get">
-            <input type="hidden" name="command" value="main"/>
+            <input type="hidden" name="command" value="admin"/>
             <div class="search-row">
                 <input type="text" name="search" placeholder="Поиск по email..." value="${param.search}"/>
                 <button type="submit" class="btn-search">Найти</button>
-                <a href="${pageContext.request.contextPath}/controller?command=main" class="btn-reset">Сбросить</a>
+                <a href="${pageContext.request.contextPath}/controller?command=admin" class="btn-reset">Сбросить</a>
             </div>
         </form>
     </div>
@@ -225,7 +260,26 @@
                                     <div class="user-id">#${u.id}</div>
                                 </div>
                             </div>
-                            <span class="role-badge ${u.role == 'ADMIN' ? 'role-admin' : 'role-user'}">${u.role}</span>
+
+                            <div class="user-actions">
+                                <!-- Смена роли -->
+                                <form action="${pageContext.request.contextPath}/controller" method="post">
+                                    <input type="hidden" name="command" value="update_role"/>
+                                    <input type="hidden" name="userId" value="${u.id}"/>
+                                    <select name="role" class="role-select">
+                                        <option value="USER"  ${u.role == 'USER'  ? 'selected' : ''}>USER</option>
+                                        <option value="ADMIN" ${u.role == 'ADMIN' ? 'selected' : ''}>ADMIN</option>
+                                    </select>
+                                    <button type="submit" class="btn-update">Сохранить</button>
+                                </form>
+
+                                <!-- Удаление -->
+                                <form action="${pageContext.request.contextPath}/controller" method="post">
+                                    <input type="hidden" name="command" value="delete_user"/>
+                                    <input type="hidden" name="userId" value="${u.id}"/>
+                                    <button type="submit" class="btn-delete">Удалить</button>
+                                </form>
+                            </div>
                         </div>
                     </c:forEach>
                 </c:otherwise>

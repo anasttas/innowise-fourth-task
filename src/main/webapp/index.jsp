@@ -156,17 +156,17 @@
     <div class="error">${login_msg}</div>
     <% } %>
 
-    <form action="controller">
+    <form action="controller" method="post">
         <input type="hidden" name="command" value="login"/>
 
         <div class="field">
             <label for="email">Email</label>
-            <input type="text" id="email" name="email" placeholder="example@mail.ru"/>
+            <input type="text" id="email" name="email" placeholder="example@mail.ru" required/>
         </div>
 
         <div class="field">
             <label for="pass">Пароль</label>
-            <input type="password" id="pass" name="pass" placeholder="Введите пароль"/>
+            <input type="password" id="pass" name="pass" placeholder="Введите пароль" required/>
         </div>
 
         <button type="submit" class="btn-login" name="sub">Войти</button>

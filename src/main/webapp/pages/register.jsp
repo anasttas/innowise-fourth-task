@@ -169,17 +169,22 @@
     <div class="success">${register_success}</div>
     <% } %>
 
-    <form action="controller">
+    <form action="${pageContext.request.contextPath}/controller" method="post">
         <input type="hidden" name="command" value="register"/>
 
         <div class="field">
             <label for="email">Email</label>
-            <input type="text" id="email" name="email" placeholder="example@mail.ru"/>
+            <input type="text" id="email" name="email" placeholder="example@mail.ru" required/>
         </div>
 
         <div class="field">
             <label for="pass">Пароль</label>
-            <input type="password" id="pass" name="pass"/>
+            <input type="password" id="pass" name="pass" required/>
+        </div>
+
+        <div class="field">
+            <label for="pass2">Повторите пароль</label>
+            <input type="password" id="pass2" name="pass2" placeholder="Повторите пароль" required/>
         </div>
 
         <button type="submit" class="btn-register" name="sub">Зарегистрироваться</button>
