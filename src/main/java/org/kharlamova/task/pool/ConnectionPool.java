@@ -23,7 +23,7 @@ public final class ConnectionPool {
 
     private static ConnectionPool instance;
 
-    private BlockingQueue<Connection> free = new LinkedBlockingQueue<>(POOL_SIZE);
+    private BlockingQueue<ProxyConnection> free = new LinkedBlockingQueue<>(POOL_SIZE);
 
     static {
         try {
@@ -70,7 +70,7 @@ public final class ConnectionPool {
         return connection;
     }
 
-    public void releaseConnection(Connection connection) {
+    public void releaseConnection(ProxyConnection connection) {
         try {
             free.put(connection);
         } catch (InterruptedException e) {

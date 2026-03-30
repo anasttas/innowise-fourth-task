@@ -12,7 +12,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private static UserServiceImpl instance = new UserServiceImpl();
 
-    private final UserDao userDao; // поменяй на интерфейс
+    private final UserDao userDao;
 
     private UserServiceImpl() {
         this.userDao = new UserDaoImpl();
